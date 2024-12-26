@@ -1,7 +1,6 @@
 import {NuxtAuthHandler} from '#auth';
 
 const OIDC_WELL_KNOWN_URL = `${process.env.NUXT_OIDC_ISSUER}/.well-known/openid-configuration`;
-const config = useRuntimeConfig()
 
 interface RefreshToken {
     access_token: string;
@@ -55,13 +54,14 @@ function isTokenExpired(expiresAt: any) {
 }
 
 export default NuxtAuthHandler({
-    secret: config.public.NEXTAUTH_SECRET,
+    secret: process.env.NEXTAUTH_SECRET,
 
     providers: [
         {
             id: 'keycloak',
             name: 'Keycloak',
             type: 'oauth',
+
             issuer: process.env.NUXT_OIDC_ISSUER,
             wellKnown: OIDC_WELL_KNOWN_URL,
             clientId: process.env.NUXT_OIDC_CLIENT_ID,
@@ -114,10 +114,20 @@ export default NuxtAuthHandler({
         async redirect({url, baseUrl}) {
             console.log("redirect url", url)
             console.log("redirect baseUrl", baseUrl)
-            console.log("redirect NUXT_BASE_URL", process.env.NUXT_BASE_URL)
-            console.log("redirect NODE_ENV", process.env.NODE_ENV)
+            console.log("redirect AUTH_ORIGIN", process.env.AUTH_ORIGIN)
+            console.log("redirect AUTH_ORIGIN", process.env.AUTH_ORIGIN)
+            console.log("redirect NEXTAUTH_URL", process.env.NEXTAUTH_URL)
 
-            return process.env.NUXT_BASE_URL || baseUrl;
+            return process.env.AUTH_ORIGIN || baseUrl;
+        },
+
+        async signIn({ user, account, profile, email, credentials }) {
+            console.log("signIn user", user)
+            console.log("signIn account", account)
+            console.log("signIn profile", profile)
+            console.log("signIn email", email)
+            console.log("signIn credentials", credentials)
+            return true
         }
 
     },

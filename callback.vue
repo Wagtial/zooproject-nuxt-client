@@ -13,6 +13,7 @@ const { handleCallback } = useAuth();
 // Maneja el callback
 handleCallback().then(() => {
   // Redirige al usuario a la página principal o a la página deseada después del login
+  alert('Autenticación exitosa');
   window.location.href = '/';
 }).catch(error => {
   // Maneja errores si el callback falla

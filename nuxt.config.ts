@@ -14,7 +14,7 @@ export default defineNuxtConfig({
             link: [
                 {rel: 'stylesheet', href: 'https://fonts.googleapis.com/icon?family=Material+Icons'}
             ]
-        }
+        },
     },
     compatibilityDate: '2024-04-03',
     devtools: {enabled: true},
@@ -48,16 +48,16 @@ export default defineNuxtConfig({
             enablePeriodically: false,
             enableOnWindowFocus: true,
         },
+
     },
     runtimeConfig: {
         public: {
             quasarBrand: defineQuasarConfig().config.brand,
-            NUXT_BASE_URL: process.env.NUXT_BASE_URL || 'http://localhost:3000',
-            NUXT_ZOO_BASEURL: process.env.NUXT_ZOO_BASEURL || 'http://localhost',
-            NUXT_OIDC_ISSUER: process.env.NUXT_OIDC_ISSUER || 'http://localhost:8080/realms/zooproject',
-            NUXT_OIDC_CLIENT_ID: process.env.NUXT_OIDC_CLIENT_ID || 'keycloak',
-            NUXT_OIDC_CLIENT_SECRET: process.env.NUXT_OIDC_CLIENT_SECRET || 'keycloak-secret',
-            NEXTAUTH_SECRET: process.env.NEXTAUTH_SECRET || 'NEXTAUTH_SECRET',
-        }
+            NUXT_BASE_URL_PREFIX: process.env.NUXT_BASE_URL_PREFIX || '/nuxt/',
+            NUXT_ZOO_BASEURL: process.env.NUXT_ZOO_BASEURL,
+            NUXT_OIDC_ISSUER: process.env.NUXT_OIDC_ISSUER,
+            AUTH_ORIGIN: process.env.AUTH_ORIGIN,
+            NEXTAUTH_URL: process.env.NEXTAUTH_URL
+        },
     }
 })
