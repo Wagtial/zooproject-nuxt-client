@@ -79,7 +79,6 @@
         <q-tabs dense align="left">
           <q-route-tab v-if="authStore.user" no-caps to="/ogc-api" label="OGC API"/>
           <q-route-tab v-if="authStore.user" no-caps to="/jobs" label="Jobs"/>
-          <q-route-tab v-if="authStore.user" no-caps to="/openapi" label="OpenAPI"/>
           <q-route-tab no-caps to="/about" label="About"/>
         </q-tabs>
       </div>
