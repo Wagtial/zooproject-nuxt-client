@@ -1,0 +1,37 @@
+FROM quay.io/keycloak/keycloak:latest
+
+# Define build arguments
+ARG KC_DB
+ARG KC_DB_URL
+ARG KC_DB_USERNAME
+ARG KC_DB_PASSWORD
+ARG KC_BOOTSTRAP_ADMIN_USERNAME=admin
+ARG KC_BOOTSTRAP_ADMIN_PASSWORD=admin
+
+# Configure a database vendor
+ENV KEYCLOAK_FEATURES=token-exchange
+ENV KC_DB=postgres
+
+# Set environment variables using build arguments
+ENV KC_DB=${KC_DB}
+ENV KC_DB_URL=${KC_DB_URL}
+ENV KC_DB_USERNAME=${KC_DB_USERNAME}
+ENV KC_DB_PASSWORD=${KC_DB_PASSWORD}
+
+WORKDIR /opt/keycloak
+
+# Ensure correct permissions
+USER root
+RUN chown -R keycloak:keycloak /opt/keycloak
+RUN chmod +x /opt/keycloak/bin/kc.sh
+
+# Switch back to the keycloak user
+USER keycloak
+
+RUN /opt/keycloak/bin/kc.sh build
+
+# Expose necessary ports
+EXPOSE 8080
+
+# Start Keycloak with admin credentials
+ENTRYPOINT ["/opt/keycloak/bin/kc.sh", "start-dev", "--proxy-headers=xforwarded", "--hostname=https://build-keycloak-162127822228.us-central1.run.app", "--http-enabled=true", "--verbose"]
