@@ -14,8 +14,8 @@ interface RefreshToken {
 async function refreshAccessToken(token: any) {
     try {
         const body = new URLSearchParams({
-                client_id: process.env.NUXT_OIDC_CLIENT_ID || "client_id",
-                client_secret: process.env.NUXT_OIDC_CLIENT_SECRET || "client_secret",
+                client_id: process.env.NUXT_OIDC_CLIENT_ID || "",
+                client_secret: process.env.NUXT_OIDC_CLIENT_SECRET || "",
                 refresh_token: token.refresh_token,
                 grant_type: "refresh_token",
             });
@@ -54,7 +54,8 @@ function isTokenExpired(expiresAt: any) {
 }
 
 export default NuxtAuthHandler({
-    secret: process.env.NEXTAUTH_SECRET,
+    // secret1: process.env.NEXTAUTH_SECRET,
+    secret: useRuntimeConfig().authSecret,
 
     providers: [
         {
@@ -112,23 +113,22 @@ export default NuxtAuthHandler({
         },
 
         async redirect({url, baseUrl}) {
-            console.log("redirect url", url)
-            console.log("redirect baseUrl", baseUrl)
-            console.log("redirect AUTH_ORIGIN", process.env.AUTH_ORIGIN)
-            console.log("redirect AUTH_ORIGIN", process.env.AUTH_ORIGIN)
-            console.log("redirect NEXTAUTH_URL", process.env.NEXTAUTH_URL)
-
             return process.env.AUTH_ORIGIN || baseUrl;
+            // return baseUrl;
         },
 
         async signIn({ user, account, profile, email, credentials }) {
-            console.log("signIn user", user)
-            console.log("signIn account", account)
-            console.log("signIn profile", profile)
-            console.log("signIn email", email)
-            console.log("signIn credentials", credentials)
+            // console.log("signIn user", user)
+            // console.log("signIn account", account)
+            // console.log("signIn profile", profile)
+            // console.log("signIn email", email)
+            // console.log("signIn credentials", credentials)
             return true
         }
 
     },
+
+    pages: {
+
+    }
 });

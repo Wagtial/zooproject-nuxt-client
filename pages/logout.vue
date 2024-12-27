@@ -20,14 +20,34 @@ const handleLogout = async () => {
   try {
     await signOut({
       redirect: false,
-    }).then((response) => {
+    }).then(async (response) => {
       console.log("response: ", response)
+
+      const token = authStore.token;
+      const logoutUrl = `${config.public.NUXT_OIDC_ISSUER}/protocol/openid-connect/logout`;
+
       authStore.clearAuth()
+
+      const body = new URLSearchParams({
+          'id_token_hint': token.id_token,
+          'redirect_uri': config.public.AUTH_ORIGIN,
+        });
+      console.log("logoutUrl: ", logoutUrl)
+      console.log("body: ", body)
+      await fetch(`${logoutUrl}?${body.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }).then((response) => {
+        console.log("keycloak logout response: ", response);
+      });
+
+      // authStore.clearAuth()
+      // await router.push({path: '/'})
+    }).finally(() => {
+      isProcessing.value = false
       router.push({path: '/'})
-    }).catch((error) => {
-      console.error("Error signing out: ", error)
-    }).catch((error) => {
-      console.error("Error signing out: ", error)
     })
   } catch (error) {
     console.error(error)

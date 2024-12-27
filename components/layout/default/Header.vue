@@ -33,7 +33,7 @@
             <q-btn v-if="isSmallScreen" class="q-px-sm" dense no-caps color="accent" round
                    icon="mdi-account-circle" href="/api/auth/signin"/>
             <q-btn v-else-if="!isLoggedUser" class="q-px-md" no-caps color="accent" label="Acceder"
-                   href="/api/auth/signin"/>
+                   :href="'/api/auth/signin'"/>
           </div>
           <div v-else>
             <q-btn rounded dense flat>
@@ -57,7 +57,7 @@
                   <q-item-section class="q-px-sm">Help</q-item-section>
                 </q-item>
                 <q-separator/>
-                <q-item clickable v-close-popup to="/logout">
+                <q-item clickable v-close-popup @click="showLogoutDialog">
                   <q-item-section class="q-px-sm">Logout</q-item-section>
                 </q-item>
               </q-list>
@@ -96,18 +96,77 @@ const authStore = useAuthStore()
 const $q = useQuasar()
 const stringToMD5 = useStringToMD5()
 
+const isProcessing = ref(false)
+const router = useRouter()
+const {signOut} = useAuth()
 
 const gravatarUrl = ref('https://www.gravatar.com/avatar/46d229b033af06a191ff2267bca9ae56/')
+
+const isSmallScreen = computed(() => {
+  return $q.screen.width <= $q.screen.sizes.sm
+})
+
+const showLogoutDialog = () => {
+  $q.dialog({
+    title: 'Logout',
+    message: 'Are you sure you want to logout?',
+    ok: {
+      label: 'Logout',
+      color: 'primary',
+    },
+    cancel: {
+      label: 'Cancel',
+      color: 'negative',
+    },
+  }).onOk(() => {
+    handleLogout()
+  })
+}
+
+const handleLogout = async () => {
+  isProcessing.value = true
+  try {
+    await signOut({
+      redirect: false,
+    }).then(async (response) => {
+      console.log("response: ", response)
+
+      const token = authStore.token;
+      const logoutUrl = `${config.public.NUXT_OIDC_ISSUER}/protocol/openid-connect/logout`;
+
+      authStore.clearAuth()
+
+      const body = new URLSearchParams({
+          'id_token_hint': token.id_token,
+          'redirect_uri': config.public.AUTH_ORIGIN,
+        });
+      console.log("logoutUrl: ", logoutUrl)
+      console.log("body: ", body)
+      await fetch(`${logoutUrl}?${body.toString()}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        },
+      }).then((response) => {
+        console.log("keycloak logout response: ", response);
+      });
+
+      // authStore.clearAuth()
+      // await router.push({path: '/'})
+    }).finally(() => {
+      isProcessing.value = false
+      router.push({path: '/'})
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 onMounted(() => {
   if (!!isLoggedUser.value && loggedUser.value.email) {
     gravatarUrl.value = `https://www.gravatar.com/avatar/${stringToMD5(loggedUser.value.email)}/`
   }
   console.log("process.env", process.env)
-})
-
-const isSmallScreen = computed(() => {
-  return $q.screen.width <= $q.screen.sizes.sm
 })
 
 </script>

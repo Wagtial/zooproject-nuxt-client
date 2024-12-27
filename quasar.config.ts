@@ -43,7 +43,7 @@ export function defineQuasarConfig(): {
     };
 } {
     return {
-        plugins: ['LoadingBar'],
+        plugins: ['LoadingBar', 'Loading', 'Dialog', 'Notify', 'LocalStorage'],
         config: {
             brand: {
                 primary: '#663e05',

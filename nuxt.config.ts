@@ -38,8 +38,10 @@ export default defineNuxtConfig({
     ],
     auth: {
         isEnabled: true,
+
         disableServerSideAuth: false,
         originEnvKey: 'AUTH_ORIGIN',
+
         provider: {
             type: 'authjs',
             trustHost: true,
@@ -51,11 +53,13 @@ export default defineNuxtConfig({
 
     },
     runtimeConfig: {
+        authSecret: process.env.NUXT_AUTH_SECRET,
+
         public: {
             quasarBrand: defineQuasarConfig().config.brand,
-            NUXT_BASE_URL_PREFIX: process.env.NUXT_BASE_URL_PREFIX || '/nuxt/',
             NUXT_ZOO_BASEURL: process.env.NUXT_ZOO_BASEURL,
             NUXT_OIDC_ISSUER: process.env.NUXT_OIDC_ISSUER,
+            NUXT_OIDC_CLIENT_ID: process.env.NUXT_OIDC_CLIENT_ID,
             AUTH_ORIGIN: process.env.AUTH_ORIGIN,
             NEXTAUTH_URL: process.env.NEXTAUTH_URL
         },
