@@ -31,14 +31,10 @@ export default defineNuxtConfig({
     vue: {
         compilerOptions: {}
     },
-    modules: [
-        "@pinia/nuxt",
-        "nuxt-quasar-ui",
-        "@sidebase/nuxt-auth"
-    ],
+    modules: ["@pinia/nuxt", "nuxt-quasar-ui", "@sidebase/nuxt-auth"],
+
     auth: {
         isEnabled: true,
-
         disableServerSideAuth: false,
         originEnvKey: 'AUTH_ORIGIN',
 
@@ -54,7 +50,6 @@ export default defineNuxtConfig({
     },
     runtimeConfig: {
         authSecret: process.env.NUXT_AUTH_SECRET,
-
         public: {
             quasarBrand: defineQuasarConfig().config.brand,
             NUXT_ZOO_BASEURL: process.env.NUXT_ZOO_BASEURL,
