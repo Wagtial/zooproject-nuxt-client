@@ -35,3 +35,18 @@ onMounted(() => {
   });
 });
 </script>
+
+<style scoped>
+::v-deep .scheme-container {
+  display: none !important;
+}
+
+::v-deep h2 small,
+::v-deep h2 small .version {
+  line-height: initial;
+}
+
+::v-deep h2 small .version-stamp {
+  line-height: initial;
+}
+</style>
