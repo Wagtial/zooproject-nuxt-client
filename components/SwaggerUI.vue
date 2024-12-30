@@ -22,7 +22,6 @@ onMounted(() => {
     showCommonExtensions: true,
     requestInterceptor: (req) => {
       const paths = ['/jobs', '/processes', '/stac', '/raster'];
-      const urlPath = req.url.replace(serverUrl, '');
       if (req.url.startsWith(serverUrl) && paths.some(path => req.url.includes('/ogc-api' + path))) {
         if (config.public.ZOO_OGCAPI_REQUIRES_BEARER_TOKEN === 'true') {
           const token = authStore.token.access_token;
