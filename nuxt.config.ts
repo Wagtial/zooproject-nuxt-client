@@ -56,7 +56,8 @@ export default defineNuxtConfig({
             NUXT_OIDC_ISSUER: process.env.NUXT_OIDC_ISSUER,
             NUXT_OIDC_CLIENT_ID: process.env.NUXT_OIDC_CLIENT_ID,
             AUTH_ORIGIN: process.env.AUTH_ORIGIN,
-            NEXTAUTH_URL: process.env.NEXTAUTH_URL
+            NEXTAUTH_URL: process.env.NEXTAUTH_URL,
+            ZOO_OGCAPI_REQUIRES_BEARER_TOKEN: process.env.ZOO_OGCAPI_REQUIRES_BEARER_TOKEN
         },
     }
 })
