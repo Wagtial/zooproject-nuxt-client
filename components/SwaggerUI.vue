@@ -14,6 +14,7 @@ onMounted(() => {
     dom_id: '#swagger-ui',
     url: 'http://34.58.209.120/ogc-api/api', // Cambia por la URL de tu config.yaml
     presets: [SwaggerUI.presets.apis],
+    plugins: [SwaggerUI.plugins],
     deepLinking: true,
     showExtensions: true,
     showCommonExtensions: true,
