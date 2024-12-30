@@ -65,28 +65,28 @@ components:
         type: integer
         minimum: 0
     processIdParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/processIdQueryParam.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/processIdQueryParam.yaml
     statusParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/status.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/status.yaml
     minDurationParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/minDuration.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/minDuration.yaml
     maxDurationParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/maxDuration.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/maxDuration.yaml
     typeParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/type.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/type.yaml
     datetimeParam:
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/datetime.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/parameters/datetime.yaml
   responses:
     '400':
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/InvalidParameter.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/InvalidParameter.yaml
     '404':
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotFound.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotFound.yaml
     '405':
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotAllowed.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotAllowed.yaml
     '406':
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotSupported.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/NotSupported.yaml
     '500':
-      $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ServerError.yaml
+      $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ServerError.yaml
   schemas:
     landingPage:
       $ref: https://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/schemas/landingPage.yaml
@@ -171,7 +171,7 @@ paths:
       operationId: get_root
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/LandingPage.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/LandingPage.yaml
   /api:
     get:
       summary: This document
@@ -193,7 +193,7 @@ paths:
       operationId: get_conformance
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ConformanceDeclaration.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ConformanceDeclaration.yaml
   /processes:
     get:
       summary: retrieve available processes
@@ -234,9 +234,9 @@ paths:
       operationId: ExecuteEndpointSAGA.shapes_points.12
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
         '201':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
         '400':
           $ref: '#/components/responses/400'
         '404':
@@ -294,9 +294,9 @@ paths:
       operationId: ExecuteEndpointOTB.BandMath
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
         '201':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
         '400':
           $ref: '#/components/responses/400'
         '404':
@@ -352,9 +352,9 @@ paths:
       operationId: post_processes__processID__execution
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteSync.yaml
         '201':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/ExecuteAsync.yaml
         '400':
           $ref: '#/components/responses/400'
         '404':
@@ -384,7 +384,7 @@ paths:
         - BearerAuth: []
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/JobList.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/JobList.yaml
         '404':
           $ref: '#/components/responses/404'
         '500':
@@ -411,7 +411,7 @@ paths:
         - BearerAuth: []
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
       parameters:
         - $ref: '#/components/parameters/jobID'
     delete:
@@ -422,7 +422,7 @@ paths:
       operationId: delete_jobs__jobID_
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Status.yaml
         '404':
           $ref: '#/components/responses/404'
         '500':
@@ -442,7 +442,7 @@ paths:
         - BearerAuth: []
       responses:
         '200':
-          $ref: https://cors-anywhere.herokuapp.com/http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Results.yaml
+          $ref: http://schemas.opengis.net/ogcapi/processes/part1/1.0/openapi/responses/Results.yaml
         '404':
           $ref: '#/components/responses/404'
         '500':
