@@ -20,8 +20,10 @@ onMounted(() => {
     showExtensions: true,
     showCommonExtensions: true,
     requestInterceptor: (req) => {
-      if (req.url.startsWith(serverUrl)) {
-        const token = authStore.token.access_token; // Obtén el token desde tu authStore
+      const paths = ['/jobs', '/processes', '/stac', '/raster'];
+      const urlPath = req.url.replace(serverUrl, '');
+      if (req.url.startsWith(serverUrl) && paths.some(path => urlPath.startsWith('/ogc-api' + path))) {
+        const token = authStore.token.access_token;
         if (token) {
           req.headers.Authorization = `Bearer ${token}`;
         }
