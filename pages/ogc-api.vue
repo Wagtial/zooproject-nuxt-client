@@ -24,17 +24,11 @@ const data = ref(null)
 
 const fetchData = async () => {
   try {
-    let response = await fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/`, {
+    data.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/`, {
       headers: {
         Authorization: `Bearer ${authStore.token.access_token}`
       }
     })
-
-    if (response.ok) {
-      data.value = await response.json()
-    } else {
-      console.error('Failed to fetch data:', response.statusText)
-    }
   } catch (error) {
     console.error('Error fetching data:', error)
   }
