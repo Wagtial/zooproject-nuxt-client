@@ -59,5 +59,8 @@ export default defineNuxtConfig({
             NEXTAUTH_URL: process.env.NEXTAUTH_URL,
             ZOO_OGCAPI_REQUIRES_BEARER_TOKEN: process.env.ZOO_OGCAPI_REQUIRES_BEARER_TOKEN
         },
+        server: {
+            port: process.env.PORT || 3000, // Default port is 3000
+        }
     }
 })

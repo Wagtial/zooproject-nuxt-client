@@ -13,9 +13,10 @@ const config = useRuntimeConfig();
 const serverUrl = config.public.NUXT_ZOO_BASEURL + '/ogc-api';
 
 onMounted(() => {
+  console.log("serverUrl", serverUrl);
   SwaggerUI({
     dom_id: '#swagger-ui',
-    url: serverUrl + '/api', // Cambia por la URL de tu config.yaml
+    url: serverUrl + '/api',
     presets: [SwaggerUI.presets.apis],
     deepLinking: true,
     showExtensions: true,
