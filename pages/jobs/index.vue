@@ -26,8 +26,10 @@
                     <q-item-section>{{ link.label }}</q-item-section>
                   </q-item>
 
-                  <q-separator />
-
+                  
+                  <q-item clickable v-close-popup @click="viewJob(props.row)">
+                    <q-item-section>View</q-item-section>
+                  </q-item>
                   <q-item clickable v-close-popup @click="deleteJob(props.row)">
                     <q-item-section class="text-negative">Delete</q-item-section>
                   </q-item>
