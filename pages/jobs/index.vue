@@ -75,9 +75,6 @@ const data = ref<any>(null)
 const loading = ref(false)
 const showModal = ref(false)
 const modalContent = ref('')
-const selectedLink = ref('')
-
-
 const fetchData = async () => {
   loading.value = true
   try {
