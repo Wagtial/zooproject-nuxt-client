@@ -70,7 +70,7 @@ const authStore = useAuthStore()
 
 const jobId = route.params.jobId
 const jobData = ref<any>(null)
-let intervalId: NodeJS.Timeout
+let intervalId: ReturnType<typeof setInterval>
 
 const selectedLink = ref(null)
 const modalContent = ref('')
