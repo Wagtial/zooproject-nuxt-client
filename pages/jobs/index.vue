@@ -75,7 +75,7 @@ const data = ref<any>(null)
 const loading = ref(false)
 const showModal = ref(false)
 const modalContent = ref('')
-const selectedLink = ref('')
+
 
 
 const fetchData = async () => {
@@ -119,7 +119,6 @@ const fetchLinkContent = async (href: string) => {
 
 
 const deleteJob = async (row: any) => {
-  console.log('Deleting job ID:', row.jobID)
   try {
     await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/jobs/${row.jobID}`, {
       method: 'DELETE',

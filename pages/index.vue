@@ -14,7 +14,7 @@
         <div class="q-mt-sm" v-if="apiInfo.license">
           License:
           <a
-            :href="apiInfo.license.ucrl"
+            :href="apiInfo.license.url"
             target="_blank"
             class="text-primary"
             style="text-decoration: underline"
@@ -86,13 +86,15 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import { useRuntimeConfig } from '#imports'
 
 const landingLinks = ref<any[]>([])
 const apiInfo = ref<any>(null)
 const loading = ref(false)
+const config = useRuntimeConfig()
 
-const landingUrl = 'http://192.168.1.6/ogc-api/'
-const apiSpecUrl = 'http://192.168.1.6/ogc-api/api'
+const landingUrl = `${config.public.NUXT_ZOO_BASEURL}/ogc-api/`
+const apiSpecUrl = `${config.public.NUXT_ZOO_BASEURL}/ogc-api/api`
 
 const fetchLandingAndApiInfo = async () => {
   loading.value = true
