@@ -12,7 +12,7 @@ const config = useRuntimeConfig()
 const data = ref(null)
 const inputValues = ref({})
 const response = ref(null)
-  
+
 const fetchData = async () => {
   try {
     data.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/processes/${processId}`, {
@@ -39,8 +39,8 @@ const submitProcess = async () => {
         }
       }))
     }
-    console.log('Input Values:', inputValues.value)
-    console.log('Payload:', JSON.stringify(payload, null, 2))
+    // console.log('Input Values:', inputValues.value)
+    // console.log('Payload:', JSON.stringify(payload, null, 2))
     response.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/processes/${processId}/execution`, {
       method: 'POST',
       headers: {
@@ -80,7 +80,11 @@ const submitProcess = async () => {
 
       <div class="q-mt-lg" v-if="response">
         <h6>Execution Response</h6>
-        <pre>{{ JSON.stringify(response, null, 2) }}</pre>
+
+        <details>
+          <summary class="text-primary text-bold cursor-pointer">Show Raw JSON</summary>
+          <pre>{{ JSON.stringify(response, null, 2) }}</pre>
+        </details>
       </div>
     </div>
     <q-spinner v-else />
