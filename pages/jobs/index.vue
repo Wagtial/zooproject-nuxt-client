@@ -76,8 +76,6 @@ const loading = ref(false)
 const showModal = ref(false)
 const modalContent = ref('')
 
-
-
 const fetchData = async () => {
   loading.value = true
   try {
@@ -99,8 +97,6 @@ const fetchData = async () => {
   }
 }
 
-
-
 const fetchLinkContent = async (href: string) => {
   try {
     const res = await $fetch(href, {
@@ -116,7 +112,6 @@ const fetchLinkContent = async (href: string) => {
     console.error(err)
   }
 }
-
 
 const deleteJob = async (row: any) => {
   try {
@@ -142,11 +137,9 @@ const deleteJob = async (row: any) => {
   }
 }
 
-
 const viewJob = (row: any) => {
   router.push(`/jobs/${row.jobID}`)
 }
-
 
 const getJobLinkOptions = (job: any) => {
   if (!job?.links) return []
@@ -156,16 +149,13 @@ const getJobLinkOptions = (job: any) => {
   }))
 }
 
-
 onMounted(() => {
   fetchData()
 })
 
-
 const rows = computed(() => {
   return data.value?.jobs || []
 })
-
 
 const columns = [
   { name: 'jobID', label: 'Job ID', field: 'jobID', align: 'left', sortable: true },
@@ -174,5 +164,4 @@ const columns = [
   { name: 'created', label: 'Created', field: 'created', align: 'left' },
   { name: 'actions', label: 'Actions', field: 'actions', align: 'center' }
 ]
-
 </script>
