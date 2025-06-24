@@ -39,7 +39,7 @@ const rows = computed(() => {
   if (!data.value?.processes) return []
   const term = filter.value.toLowerCase()
   return data.value.processes.filter(p => {
-    const idMatch   = p.id.toLowerCase().includes(term)
+    const idMatch = p.id.toLowerCase().includes(term)
     const descMatch = (p.description ?? '').toLowerCase().includes(term)
     return idMatch || descMatch
   })

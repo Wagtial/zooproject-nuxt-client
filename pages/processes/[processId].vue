@@ -39,8 +39,7 @@ const submitProcess = async () => {
         }
       }))
     }
-    // console.log('Input Values:', inputValues.value)
-    // console.log('Payload:', JSON.stringify(payload, null, 2))
+
     response.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/processes/${processId}/execution`, {
       method: 'POST',
       headers: {
