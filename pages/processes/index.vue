@@ -81,11 +81,6 @@ const formattedData = computed(() => JSON.stringify(data.value, null, 2))
 
         <q-separator />
 
-        <br />
-        <div v-if="data">
-          <pre itemprop="info">{{ formattedData }}</pre>
-        </div>
-        <q-spinner v-else />
       </div>
     </div>
   </q-page>
