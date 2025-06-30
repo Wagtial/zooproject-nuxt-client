@@ -15,6 +15,8 @@
             <q-separator class="q-my-md" />
 
             <div><strong>Process ID:</strong> {{ jobData.processID }}</div>
+            <div><strong>Progress:</strong> {{ jobData.progress }}</div>
+            <div><strong>Message:</strong> {{ jobData.message }}</div>
             <div><strong>Status:</strong> {{ jobData.status }}</div>
             <div><strong>Created:</strong> {{ jobData.created }}</div>
 

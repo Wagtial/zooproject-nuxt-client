@@ -1,6 +1,6 @@
 <template>
   <q-page class="q-pa-md">
-    <p class="text-h4 q-mb-md">Home</p>
+    <!-- <p class="text-h4 q-mb-md">Home</p> -->
 
     <q-card v-if="apiInfo" class="q-pa-md q-mb-lg">
       <q-card-section>
@@ -86,24 +86,36 @@
 
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
+import {useRuntimeConfig} from '#imports'
 
+const authStore = useAuthStore()
 const landingLinks = ref<any[]>([])
 const apiInfo = ref<any>(null)
 const loading = ref(false)
 
-const landingUrl = 'http://192.168.1.6/ogc-api/'
-const apiSpecUrl = 'http://192.168.1.6/ogc-api/api'
+const config = useRuntimeConfig()
+const landingUrl = `${config.public.NUXT_ZOO_BASEURL}/ogc-api/`
+const apiSpecUrl = `${config.public.NUXT_ZOO_BASEURL}/ogc-api/api`
 
 const fetchLandingAndApiInfo = async () => {
   loading.value = true
   try {
-    const landingRes = await $fetch(landingUrl)
+    const landingRes = await $fetch(landingUrl, {
+      headers: {
+        Authorization: `Bearer ${authStore.token.access_token}`
+      }
+    })
     landingLinks.value = landingRes.links || []
 
     const apiRes = await $fetch(apiSpecUrl)
     apiInfo.value = apiRes.info || {}
   } catch (err) {
     console.error('Error loading homepage data:', err)
+    const landingRes = await $fetch(landingUrl)
+    landingLinks.value = landingRes.links || []
+
+    const apiRes = await $fetch(apiSpecUrl)
+    apiInfo.value = apiRes.info || {}
   } finally {
     loading.value = false
   }
