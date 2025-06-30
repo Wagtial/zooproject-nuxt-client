@@ -44,7 +44,7 @@
             <q-menu>
               <q-list dense>
                 <q-item clickable v-close-popup 
-                  :href="`${config.public.NUXT_OIDC_ISSUER}/account/?referrer=${config.public.NUXT_OIDC_CLIENT_ID}&referrer_uri=${encodeURIComponent(config.public.NUXT_BASE_URL)}`" 
+                  :href="`${config.public.NUXT_OIDC_ISSUER}/account/?referrer=${config.public.NUXT_OIDC_CLIENT_ID}&referrer_uri=${config.public.AUTH_ORIGIN}`" 
                   class="q-px-lg" >
                   <q-item-section class="q-px-sm">Profile</q-item-section>
                 </q-item>
@@ -63,6 +63,11 @@
       <div class="col-auto">
         <q-tabs dense align="left">
           <q-route-tab no-caps to="/" label="Home"/>
+        </q-tabs>
+      </div>
+      <q-space/>
+      <div class="col-auto">
+        <q-tabs dense align="left">
           <q-route-tab v-if="authStore.user" no-caps to="/swagger" label="Swagger"/>
           <q-route-tab v-if="authStore.user" no-caps to="/processes" label="Processes"/>
           <q-route-tab v-if="authStore.user" no-caps to="/jobs" label="Jobs"/>
