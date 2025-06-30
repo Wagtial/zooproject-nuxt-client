@@ -32,7 +32,7 @@
           <div v-if="!authStore.user">
             <q-btn v-if="isSmallScreen" class="q-px-sm" dense no-caps color="accent" round
                    icon="mdi-account-circle" href="/api/auth/signin"/>
-            <q-btn v-else-if="!isLoggedUser" class="q-px-md" no-caps color="accent" label="Acceder"
+            <q-btn v-else-if="!isLoggedUser" class="q-px-md" no-caps color="accent" label="Authenticate"
                    :href="'/api/auth/signin'"/>
           </div>
           <div v-else>
@@ -43,18 +43,10 @@
             </q-btn>
             <q-menu>
               <q-list dense>
-                <q-item clickable v-close-popup class="q-px-lg">
+                <q-item clickable v-close-popup 
+                  :href="`${config.public.NUXT_OIDC_ISSUER}/account/?referrer=${config.public.NUXT_OIDC_CLIENT_ID}&referrer_uri=${config.public.AUTH_ORIGIN}`" 
+                  class="q-px-lg" >
                   <q-item-section class="q-px-sm">Profile</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section class="q-px-sm">Sample</q-item-section>
-                </q-item>
-                <q-item clickable v-close-popup>
-                  <q-item-section class="q-px-sm">Recent activity</q-item-section>
-                </q-item>
-                <q-separator/>
-                <q-item clickable v-close-popup to="/help">
-                  <q-item-section class="q-px-sm">Help</q-item-section>
                 </q-item>
                 <q-separator/>
                 <q-item clickable v-close-popup @click="showLogoutDialog">
@@ -88,7 +80,7 @@
 <script setup lang="ts">
 const config = useRuntimeConfig()
 const showHeaderMenu = ref(false)
-const isLoggedUser = ref(false) // TODO: Implement user authentication and pinia storage of user data
+const isLoggedUser = ref(false) // TODO: Implement user authentication and pinia storage o
 const loggedUser = ref({email: 'mathereall@gmail.com'}) // TODO: Implement user authentication and pinia storage of user data
 
 const authStore = useAuthStore()
@@ -136,8 +128,9 @@ const handleLogout = async () => {
       authStore.clearAuth()
 
       const body = new URLSearchParams({
+          'client_id': config.public.NUXT_OIDC_CLIENT_ID,
+          'post_logout_redirect_uri': config.public.AUTH_ORIGIN,
           'id_token_hint': token.id_token,
-          'redirect_uri': config.public.AUTH_ORIGIN,
         });
       console.log("logoutUrl: ", logoutUrl)
       console.log("body: ", body)
@@ -162,10 +155,13 @@ const handleLogout = async () => {
 }
 
 onMounted(() => {
-  if (!!isLoggedUser.value && loggedUser.value.email) {
-    gravatarUrl.value = `https://www.gravatar.com/avatar/${stringToMD5(loggedUser.value.email)}/`
+  console.log("onMounted Header")
+  console.log(loggedUser.value)
+  console.log()
+  console.log("/onMounted Header")
+  if(authStore.user && authStore.user.email) {
+    gravatarUrl.value = `https://www.gravatar.com/avatar/${stringToMD5(authStore.user.email)}/`
   }
-  console.log("process.env", process.env)
 })
 
 </script>

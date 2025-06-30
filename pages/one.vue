@@ -5,7 +5,7 @@
       <q-toolbar>
         <q-toolbar-title>
           <q-avatar>
-            <img src="https://zoo-project.org/images/zoo-sun-logo.png" alt="Logo">
+            <img src="https://zoo-project.org/image/zoo-sun-logo.png" alt="Logo">
           </q-avatar>
           {{ providerName }}
         </q-toolbar-title>
