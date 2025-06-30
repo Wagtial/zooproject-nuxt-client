@@ -97,10 +97,6 @@ const selectedLink = ref(null)
 const modalContent = ref('')
 const showModal = ref(false)
 const geojsonData = ref(null)
-
-let intervalId: ReturnType<typeof setInterval>
-
-
 const mapInstance = ref<Map>()
 
 onMounted(() => {
