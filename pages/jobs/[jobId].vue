@@ -159,16 +159,21 @@ const fetchLinkContent = async (href: string) => {
       },
     })
 
-   
-    const featureCollection = response?.RESULT?.value
-    if (featureCollection?.type === 'FeatureCollection') {
-      geojsonData.value = featureCollection
-      showModal.value = false
-      showMapOnGeojson()
-    } else {
-      modalContent.value = JSON.stringify(response, null, 2)
-      showModal.value = true
+    for (const key in response) {
+      if (response[key]?.value) {
+        const featureCollection = response[key].value
+        if (featureCollection?.type === 'FeatureCollection') {
+          geojsonData.value = featureCollection
+          showModal.value = false
+          showMapOnGeojson()
+          return
+        }
+      }
     }
+
+    modalContent.value = JSON.stringify(response, null, 2)
+    showModal.value = true
+
   } catch (err) {
     modalContent.value = 'Failed to fetch link content'
     showModal.value = true
