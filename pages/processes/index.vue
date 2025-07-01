@@ -41,6 +41,40 @@ const packageProcess = async (row: any) => {
 
 }
 
+const isConformToCwl = ref(false)
+const isCheckingConformance = ref(false)
+
+const checkConformance = async () => {
+  isCheckingConformance.value = true
+  try {
+    const response = await fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/conformance`, {
+      method: 'GET',
+      headers: {
+        'Accept': 'application/json'
+      }
+    })
+
+    if (response.ok) {
+      const conformance = await response.json()
+      console.log('Conformance response:', conformance)
+
+      // Vérifier si l'API supporte le déploiement CWL
+      const cwlConformanceUrl = 'http://www.opengis.net/spec/ogcapi-processes-2/1.0/conf/deploy-replace-undeploy'
+      isConformToCwl.value = conformance.conformsTo?.includes(cwlConformanceUrl) || false
+
+      console.log('CWL Conformance:', isConformToCwl.value)
+    } else {
+      console.error('Error fetching conformance:', response.status)
+      isConformToCwl.value = false
+    }
+  } catch (error) {
+    console.error('Error fetching conformance', error)
+    isConformToCwl.value = false
+  } finally {
+    isCheckingConformance.value = false
+  }
+}
+
 const deleteProcess = async (row: any) => {
   if (confirm(`Are you sure you want to delete the process "${row.id}"?`)) {
     try {
@@ -52,13 +86,26 @@ const deleteProcess = async (row: any) => {
       })
       
       if (response.ok) {
+        Notify.create({
+          message: 'Process deleted successfully',
+          type: 'positive'
+        })
         await fetchData()
         console.log('Process deleted successfully')
       } else {
         console.error('Error deleting process')
+        Notify.create({
+          message: 'Process deletion failed',
+          type: 'negative'
+        })
       }
     } catch (error) {
       console.error('Delete request failed', error)
+      Notify.create({
+        message: 'Delete request failed',
+        color: 'negative',
+        icon: 'error'
+      })
     }
   }
 }
@@ -154,6 +201,7 @@ const fetchData = async () => {
 }
 
 onMounted(() => {
+  checkConformance()
   fetchData()
 })
 
@@ -187,7 +235,14 @@ const formattedData = computed(() => JSON.stringify(data.value, null, 2))
     <div class="row justify-center">
       <div class="col-12 q-pa-md" style="max-width: 1080px;">
         <p class="text-h4 q-mb-md text-weight-bold">Processes List</p>
-        <q-btn color="primary" icon="add" label="Add Process" @click="openDialog" />
+        <q-btn
+          v-if="isConformToCwl === true"
+          color="primary"
+          icon="add"
+          label="Add Process"
+          @click="openDialog"
+          :loading="isCheckingConformance"
+        />
         <q-separator />
 
         <div class="q-mb-md">
