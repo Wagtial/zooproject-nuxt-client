@@ -93,6 +93,7 @@ const pollJobStatus = async (jobId: string) => {
 
 const submitProcess = async () => {
   try {
+<<<<<<< HEAD
     loading.value = true
     response.value = null
     jobStatus.value = 'submitted'
@@ -100,6 +101,18 @@ const submitProcess = async () => {
     const payload = JSON.parse(jsonRequestPreview.value)
 
     const res = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/processes/${processId}/execution`, {
+=======
+    const payload = {
+      inputs: Object.entries(inputValues.value).map(([id, val]) => ({
+        id,
+        input: {
+          value: val
+        }
+      }))
+    }
+
+    response.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/processes/${processId}/execution`, {
+>>>>>>> 9801d4b39659670d170d330c97d466e8604ceb81
       method: 'POST',
       headers: {
         Authorization: `Bearer ${authStore.token.access_token}`,
