@@ -7,7 +7,7 @@
           <div class="col-auto">
             <NuxtLink to="/">
               <q-avatar square >
-                <q-img src="//zoo-project.org/images/zoo-sun-logo-big.png" width="128"/>
+                <q-img src="https://zoo-project.org/images/zoo-sun-logo-big.png" width="128"/>
               </q-avatar>
 
             </NuxtLink>

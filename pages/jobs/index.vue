@@ -1,46 +1,51 @@
 <template>
   <q-page class="q-pa-sm">
     <div class="row justify-center">
-      <div class="col-12 q-pa-md" style="max-width: 1080px;">
-        <p class="text-h3">Jobs List</p>
+      <div class="col-12 q-pa-lg" style="max-width: 1080px;">
+        <p class="text-h4 q-mb-md text-weight-bold">Jobs List</p>
         <q-separator />
 
-        <q-table
-          title="Jobs List"
-          :rows="rows"
-          :columns="columns"
-          row-key="jobID"
-          :loading="loading"
-        >
-          <template v-slot:body-cell-actions="props">
-            <q-td :props="props" class="text-center">
-              <q-btn-dropdown color="primary" label="Actions" flat>
-                <q-list>
-                  <q-item
-                    v-for="(link, index) in getJobLinkOptions(props.row)"
-                    :key="index"
-                    clickable
-                    v-close-popup
-                    @click="fetchLinkContent(link.value)"
-                  >
-                    <q-item-section>{{ link.label }}</q-item-section>
-                  </q-item>
+        <q-card class="q-pa-md q-mt-md shadow-2 rounded-borders">
+          <q-table
+            title="Jobs List"
+            :rows="rows"
+            :columns="columns"
+            row-key="jobID"
+            :loading="loading"
+            :separator="'horizontal'" 
+            flat
+            bordered
+            class="rounded-borders"
+          >
+            <template v-slot:body-cell-actions="props">
+              <q-td :props="props" class="text-center">
+                <q-btn-dropdown color="primary" label="Actions" flat rounded>
+                  <q-list>
+                    <q-item
+                      v-for="(link, index) in getJobLinkOptions(props.row)"
+                      :key="index"
+                      clickable
+                      v-close-popup
+                      @click="fetchLinkContent(link.value)"
+                    >
+                      <q-item-section>{{ link.label }}</q-item-section>
+                    </q-item>
 
-                  
-                  <q-item clickable v-close-popup @click="viewJob(props.row)">
-                    <q-item-section>View</q-item-section>
-                  </q-item>
-                  <q-item clickable v-close-popup @click="deleteJob(props.row)">
-                    <q-item-section class="text-negative">Delete</q-item-section>
-                  </q-item>
-                </q-list>
-              </q-btn-dropdown>
-            </q-td>
-          </template>
-        </q-table>
+                    <q-item clickable v-close-popup @click="viewJob(props.row)">
+                      <q-item-section>View</q-item-section>
+                    </q-item>
+                    <q-item clickable v-close-popup @click="deleteJob(props.row)">
+                      <q-item-section class="text-negative">Delete</q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-btn-dropdown>
+              </q-td>
+            </template>
+          </q-table>
+        </q-card>
 
         <q-dialog v-model="showModal" persistent>
-          <q-card style="min-width: 600px; max-width: 90vw;">
+          <q-card style="min-width: 600px; max-width: 90vw;" class="rounded-borders">
             <q-card-section class="row items-center q-pb-none">
               <div class="text-h6">Link Content</div>
               <q-space />
@@ -75,6 +80,8 @@ const data = ref<any>(null)
 const loading = ref(false)
 const showModal = ref(false)
 const modalContent = ref('')
+
+
 const fetchData = async () => {
   loading.value = true
   try {
@@ -116,7 +123,6 @@ const fetchLinkContent = async (href: string) => {
 
 
 const deleteJob = async (row: any) => {
-  console.log('Deleting job ID:', row.jobID)
   try {
     await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/jobs/${row.jobID}`, {
       method: 'DELETE',
