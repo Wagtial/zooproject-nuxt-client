@@ -35,6 +35,24 @@
 
             <div class="q-mb-md"><strong>Created:</strong> {{ jobData.created }}</div>
 
+            <div v-if="jobData.status === 'running'" class="q-mt-md">
+              <div class="q-mb-sm">
+                <strong>Progress:</strong> {{ jobData.progress ?? 0 }}%
+                <q-linear-progress
+                  color="primary"
+                  :value="(jobData.progress ?? 0) / 100"
+                  class="q-mt-xs"
+                  rounded
+                  animated
+                />
+              </div>
+
+              <div class="q-mb-sm">
+                <strong>Message:</strong> {{ jobData.message || 'Processing...' }}
+              </div>
+            </div>
+
+
             <div v-if="jobData.jobID" class="q-mt-md">
                 <a :href="`${config.public.NUXT_ZOO_BASEURL}/ogc-api/jobs/${jobData.jobID}/results`" target="_blank">
                   View Full Result JSON
@@ -44,13 +62,22 @@
         </q-card>
 
         <q-spinner v-else class="q-mt-md" />
+         <div
+            v-if="['successful', 'failed'].includes(jobData?.status)"
+            id="map"
+            class="map q-mt-lg"
+            tabindex="0"
+            style="height: 300px; width: 100%; max-width: 1000px;"
+          />
+          <ol-map
+            v-if="['successful', 'failed'].includes(jobData?.status) && mapInstance"
+            :instance="mapInstance"
+          >
+            <ol-zoomslider-control />
+          </ol-map>
       </div>
     </div>
 
-    <div id="map" class="map q-mt-lg" tabindex="0" style="height: 400px; width: 100%" />
-    <ol-map v-if="mapInstance" :instance="mapInstance">
-      <ol-zoomslider-control />
-    </ol-map>
 
     <q-dialog v-model="showModal" persistent>
       <q-card style="min-width: 600px; max-width: 90vw;">
@@ -73,7 +100,7 @@
 
 <script setup lang="ts">
 import { useRoute } from 'vue-router'
-import { ref, onMounted, onBeforeUnmount, computed } from 'vue'
+import { ref, onMounted, onBeforeUnmount, computed, nextTick, watch } from 'vue'
 import { useRuntimeConfig } from '#imports'
 import { useAuthStore } from '~/stores/auth'
 
@@ -100,20 +127,6 @@ const geojsonData = ref(null)
 const mapInstance = ref<Map>()
 
 onMounted(() => {
-  mapInstance.value = new Map({
-    layers: [
-      new TileLayer({
-        source: new OSM(),
-      }),
-    ],
-    target: 'map',
-    view: new View({
-      center: [0, 0],
-      zoom: 2,
-      projection: 'EPSG:4326',
-    }),
-  })
-
   fetchJobDetails()
   intervalId = setInterval(fetchJobDetails, 3000)
 })
@@ -121,6 +134,32 @@ onMounted(() => {
 onBeforeUnmount(() => {
   clearInterval(intervalId)
 })
+
+
+watch(
+  () => jobData.value?.status,
+  async (status) => {
+    if ((status === 'successful' || status === 'failed') && !mapInstance.value) {
+      await nextTick()
+      const mapEl = document.getElementById('map')
+      if (!mapEl) return
+
+      mapInstance.value = new Map({
+        layers: [
+          new TileLayer({
+            source: new OSM(),
+          }),
+        ],
+        target: 'map',
+        view: new View({
+          center: [0, 0],
+          zoom: 2,
+          projection: 'EPSG:4326',
+        }),
+      })
+    }
+  }
+)
 
 
 const fetchJobDetails = async () => {
@@ -141,7 +180,6 @@ const fetchJobDetails = async () => {
   }
 }
 
-
 const linkOptions = computed(() => {
   if (!jobData.value?.links) return []
   return jobData.value.links.map((link: any, index: number) => ({
@@ -149,7 +187,6 @@ const linkOptions = computed(() => {
     value: link.href,
   }))
 })
-
 
 const fetchLinkContent = async (href: string) => {
   try {
@@ -181,25 +218,32 @@ const fetchLinkContent = async (href: string) => {
   }
 }
 
+async function showMapOnGeojson() {
+  await nextTick()
+  if (!mapInstance.value || !geojsonData.value) return
 
-function showMapOnGeojson() {
   const format = new GeoJSON()
   const features = format.readFeatures(geojsonData.value, {
     featureProjection: 'EPSG:4326',
   })
 
+ 
+  mapInstance.value.getLayers().forEach((layer) => {
+    if (layer instanceof VectorLayer) {
+      mapInstance.value.removeLayer(layer)
+    }
+  })
+
   const vectorSource = new VectorSource({ features })
   const vectorLayer = new VectorLayer({ source: vectorSource })
-
   mapInstance.value.addLayer(vectorLayer)
-  const extent = vectorSource.getExtent()
 
+  const extent = vectorSource.getExtent()
   mapInstance.value.getView().fit(extent, {
     padding: [50, 50, 50, 50],
     maxZoom: 10,
     duration: 1000,
   })
 }
+
 </script>
-
-
