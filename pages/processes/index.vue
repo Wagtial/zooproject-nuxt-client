@@ -294,7 +294,6 @@ const onClearSearch = async () => {
       </div>
     </div>
 
-
     <q-dialog v-model="dialog" persistent>
       <q-card style="min-width: 800px; max-width: 90vw;">
         <q-card-section>
