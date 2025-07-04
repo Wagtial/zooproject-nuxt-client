@@ -10,6 +10,14 @@ const router = useRouter()
 const modalContent = ref('')
 const showModal = ref(false)
 const toDisplayString = ref('')
+
+
+import { QCard, QCardSection, QInput, QBtn, QDialog, QForm, QUploader, QSpinnerGears, Notify } from 'quasar';
+
+const viewProcess = (row: any) => {
+  router.push(`/processes/${row.id}`)
+}
+
  
 import { QCard, QCardSection, QInput, QBtn, QDialog, QForm, QUploader, QSpinnerGears, Notify } from 'quasar';
  
@@ -38,7 +46,6 @@ const packageProcess = async (row: any) => {
       console.error('Application Package request failed', error)
       showModal.value = false
     }
-}
 
 const isConformToCwl = ref(false)
 const isCheckingConformance = ref(false)
@@ -57,7 +64,11 @@ const checkConformance = async () => {
       const conformance = await response.json()
       console.log('Conformance response:', conformance)
 
+
+      // Vérifier si l'API supporte le déploiement CWL
+
       // DRU Supported?
+
       const cwlConformanceUrl = 'http://www.opengis.net/spec/ogcapi-processes-2/1.0/conf/deploy-replace-undeploy'
       isConformToCwl.value = conformance.conformsTo?.includes(cwlConformanceUrl) || false
 
@@ -227,12 +238,12 @@ const rows = computed(() => {
 })
  
 const formattedData = computed(() => JSON.stringify(data.value, null, 2))
- 
+
 const onClearSearch = async () => {
   filter.value = ''
   await fetchData()
 }
- 
+
 </script>
  
 <template>

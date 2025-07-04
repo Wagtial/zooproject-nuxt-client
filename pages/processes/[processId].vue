@@ -85,6 +85,66 @@ const convertOutputsToPayload = (outputs: Record<string, any[]>) => {
       })
       
       result[key] = outputConfig
+
+    }
+  }
+  return result
+}
+
+watch([inputValues, outputValues, subscriberValues], ([newInputs, newOutputs, newSubscribers]) => {
+  console.log('Outputs changed:', newOutputs)
+
+  const payload = {
+    inputs: newInputs,
+    outputs: convertOutputsToPayload(newOutputs),
+    subscriber: {
+      successUri: newSubscribers.successUri,
+      inProgressUri: newSubscribers.inProgressUri,
+      failedUri: newSubscribers.failedUri
+    }
+  }
+  jsonRequestPreview.value = JSON.stringify(payload, null, 2)
+}, { deep: true })
+
+const pollJobStatus = async (jobId: string) => {
+  const jobUrl = `${config.public.NUXT_ZOO_BASEURL}/ogc-api/jobs/${jobId}`
+  const headers = {
+    Authorization: `Bearer ${authStore.token.access_token}`
+  }
+
+  while (true) {
+    try {
+      const job = await $fetch(jobUrl, { headers })
+      jobStatus.value = job.status
+
+      if (job.status === 'successful') {
+        response.value = job
+        loading.value = false
+        break
+      } else if (job.status === 'failed') {
+        response.value = { error: 'Job failed', details: job }
+        loading.value = false
+        break
+      }
+
+      await new Promise(resolve => setTimeout(resolve, 2000))
+    } catch (err) {
+      console.error('Polling error:', err)
+      loading.value = false
+      break
+    }
+  }
+}
+
+const submitProcess = async () => {
+  try {
+    loading.value = true
+    response.value = null
+    jobStatus.value = 'submitted'
+
+    const payload = JSON.parse(jsonRequestPreview.value)
+
+=======
     }
   }
   return result
@@ -161,8 +221,22 @@ const submitProcess = async () => {
   } catch (error) {
     console.error('Execution error:', error)
     loading.value = false
+
   }
 }
+
+const isMultipleInput = (input: any) => {
+  return input.maxOccurs > 1 ? true : false
+}
+
+const addInputField = (inputId: string) => {
+  if (!Array.isArray(inputValues.value[inputId])) {
+    inputValues.value[inputId] = [inputValues.value[inputId] || '']
+
+  }
+  inputValues.value[inputId].push('')
+}
+
 
 const isMultipleInput = (input: any) => {
   return input.maxOccurs > 1 ? true : false
@@ -242,6 +316,61 @@ const removeInputField = (inputId: string, index: number) => {
               </div>
 
             <!-- <div class="text-blue text-bold q-mb-sm">{{ inputId.toUpperCase() }}</div> -->
+
+            <div class="q-gutter-sm">
+              <q-badge color="grey-3" text-color="black" class="q-mb-sm">
+                {{ input.schema?.type || 'text' }}
+              </q-badge>
+
+              <template v-if="Array.isArray(inputValues[inputId])">
+                <div v-for="(val, idx) in inputValues[inputId]" :key="idx" class="row items-center q-gutter-sm q-mb-sm">
+                  <q-input
+                    filled
+                    v-model="inputValues[inputId][idx]"
+                    :type="input.schema?.type === 'number' ? 'number' : 'text'"
+                    :label="`${input.title || inputId} ${idx + 1}`"
+                    dense
+                    style="flex: 1"
+                  />
+                  <q-btn
+                    icon="delete"
+                    round
+                    dense
+                    flat
+                    color="red"
+                    size="sm"
+                    @click="removeInputField(inputId, idx)"
+                    v-if="inputValues[inputId].length > 1"
+                  >
+                    <q-tooltip>Remove</q-tooltip>
+                  </q-btn>
+                </div>
+              </template>
+
+              <template v-else-if="!input.schema?.enum">
+                <q-input
+                  filled
+                  v-model="inputValues[inputId]"
+                  :type="input.schema?.type === 'number' ? 'number' : 'text'"
+                  :label="input.title || inputId"
+                  dense
+                  class="q-ml-sm"
+                  style="flex: 1"
+                />
+              </template>
+
+              <template v-else>
+                <q-select
+                  filled
+                  v-model="inputValues[inputId]"
+                  :options="input.schema.enum"
+                  :label="input.title || inputId"
+                  dense
+                  class="q-ml-sm"
+                  style="flex: 1"
+                />
+              </template>
+
             <div class="q-gutter-sm row items-center">
               <q-badge color="grey-3" text-color="black">
                 {{ input.schema?.type || 'text' }}
@@ -269,6 +398,7 @@ const removeInputField = (inputId: string, index: number) => {
                 class="q-ml-sm"
                 style="flex: 1"
               />
+
             </div>
           </q-card>
 
