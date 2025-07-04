@@ -1,5 +1,5 @@
 <template>
-<<<<<<< HEAD
+
   <q-page class="row no-wrap">
 
     <!-- Left Main Content -->
@@ -98,7 +98,6 @@
     <pre itemprop="info">{{ formattedData }}</pre>
   </div>
 -->
-=======
   <q-page class="q-pa-md">
     <div class="row justify-center">
       <div class="col-12" style="max-width: 900px;">
@@ -192,13 +191,13 @@
         <q-spinner v-if="loading" class="q-mt-lg" />
       </div>
     </div>
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
+
   </q-page>
 </template>
 
 
 <script setup lang="ts">
-<<<<<<< HEAD
+
 import {ref, computed, onMounted} from 'vue'
 import {useRuntimeConfig} from '#imports'
 
@@ -210,7 +209,7 @@ const data = ref(null)
 const fetchData = async () => {
   try {
     data.value = await $fetch(`${config.public.NUXT_ZOO_BASEURL}/ogc-api/api`, {
-=======
+
 import { ref, onMounted } from 'vue'
 import { useRuntimeConfig } from '#imports'
 
@@ -227,12 +226,12 @@ const fetchLandingAndApiInfo = async () => {
   loading.value = true
   try {
     const landingRes = await $fetch(landingUrl, {
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
+
       headers: {
         Authorization: `Bearer ${authStore.token.access_token}`
       }
     })
-<<<<<<< HEAD
+
   } catch (error) {
     console.error('Error fetching data:', error)
     try {
@@ -290,7 +289,7 @@ const metadata_contact = computed(() => {
   }
 })
 
-=======
+
     landingLinks.value = landingRes.links || []
 
     const apiRes = await $fetch(apiSpecUrl)
@@ -341,5 +340,5 @@ const getReadableLinkText = (link: any): string => {
 
 
 onMounted(fetchLandingAndApiInfo)
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
+
 </script>
