@@ -9,30 +9,21 @@
 </script>
 
 <style>
-<<<<<<< HEAD
-=======
-
 .q-card,
 .q-btn,
 .q-btn-dropdown,
 .q-dialog__inner,
 .q-item,
 
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
 .q-table{
   border-radius: 12px !important;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.06); 
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
 .q-input{
   border-radius: 12px !important;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
 }
-<<<<<<< HEAD
-=======
 
 .q-menu {
   border-radius: 12px !important;
@@ -58,5 +49,4 @@
   margin-top: 20px;
 }
 
->>>>>>> f2d325061a5bdd4d44d07f199805402967e44a10
 </style>
